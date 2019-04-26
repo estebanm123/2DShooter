@@ -9,6 +9,7 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
 
+    public static final int ONE_PIXEL_OFFSET = 1;
     private GameModel gameModel;
 
     public GamePanel(GameModel gameModel) {
@@ -36,9 +37,28 @@ public class GamePanel extends JPanel {
 
     private void drawPlayer(Graphics2D g2d) {
         Player p = gameModel.getPlayer();
-        g2d.setColor(Player.COLOR);
+        if (!p.isHit()) {
+            g2d.setColor(Player.COLOR);
+            Color c = g2d.getColor();
+        }
         g2d.fillOval(p.getX(), p.getY(), Player.SIZE_X, Player.SIZE_Y);
+        drawGun(g2d, p);
     }
+
+    //fils a rectangle at the middle edge of the player depending on direction
+    private void drawGun(Graphics2D g2d, Player p) {
+        if (p.getFireDirection() == Projectile.LEFT) {
+            g2d.setColor(Player.COLOR);
+            g2d.fillRect(p.getX() - (Player.SIZE_X / 3) + ONE_PIXEL_OFFSET, p.getY() + (Player.SIZE_Y / 2) - (Player.GUN_SIZE_Y / 2),
+                    Player.GUN_SIZE_X, Player.GUN_SIZE_Y);
+        } else {
+            g2d.setColor(Player.COLOR);
+            g2d.fillRect(p.getX() + Player.SIZE_X, p.getY() + (Player.SIZE_Y / 2) - (Player.GUN_SIZE_Y / 2),
+                    Player.GUN_SIZE_X, Player.GUN_SIZE_Y);
+        }
+    }
+
+
 
     private void drawEnemies(Graphics2D g2d) {
         for (Enemy e : gameModel.getEnemies()) {

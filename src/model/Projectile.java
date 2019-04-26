@@ -22,7 +22,7 @@ public class Projectile extends Moveable {
 
     @Override
     public void move() {
-        if (LEFT) {
+        if (direction == LEFT) {
             x -= INITIAL_DX;
         } else {
             x += INITIAL_DX;

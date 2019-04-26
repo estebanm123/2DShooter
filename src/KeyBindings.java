@@ -20,7 +20,7 @@ public class KeyBindings {
         keysPressed = new boolean[4];
     }
 
-    // REQUIRES: valid key name; getKeyStroke(String s) has parsing documentation
+    // Requires valid key name; getKeyStroke(String s) has parsing documentation
     public void addMoveAction(String name, int direction) {
         gamePanel.getInputMap().put(KeyStroke.getKeyStroke("pressed " + name), name);
         gamePanel.getActionMap().put(name, new MoveAction(direction, true));
@@ -30,9 +30,16 @@ public class KeyBindings {
         gamePanel.getActionMap().put("released " + name, new MoveAction(direction, false));
     }
 
+    // Requires valid key name; getKeyStroke(String s) has parsing documentation
     public void addFireAction(String name) {
         gamePanel.getInputMap().put(KeyStroke.getKeyStroke("pressed " + name), name);
         gamePanel.getActionMap().put(name, new FireAction());
+    }
+
+    // Requires valid key name; getKeyStroke(String s) has parsing documentation
+    public void addSwitchFireDirectionAction(String name) {
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke("pressed " + name), name);
+        gamePanel.getActionMap().put(name, new SwitchFireDirectionAction());
     }
 
     private class MoveAction extends AbstractAction {
@@ -106,6 +113,14 @@ public class KeyBindings {
                 hasFired = true;
             }
 
+        }
+    }
+
+    private class SwitchFireDirectionAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            gamePanel.getGameModel().getPlayer().switchFireDirection();
         }
     }
 

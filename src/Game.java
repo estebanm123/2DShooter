@@ -41,6 +41,7 @@ public class Game extends JFrame {
         kb.addMoveAction("S", KeyBindings.SOUTH);
         kb.addMoveAction("D", KeyBindings.EAST);
         kb.addFireAction("SPACE");
+        kb.addSwitchFireDirectionAction("F");
 
     }
 
