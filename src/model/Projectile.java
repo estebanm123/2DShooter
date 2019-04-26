@@ -2,7 +2,7 @@ package model;
 
 import java.awt.*;
 
-public class Projectile extends Moveable {
+public class Projectile extends MoveableObject {
 
     public static final int INITIAL_DX = 10;
     public static final int SIZE_X = 15;
@@ -14,9 +14,7 @@ public class Projectile extends Moveable {
     private boolean direction;
 
     public Projectile(int x, int y, boolean direction) {
-        super(x, y);
-        sizeX = SIZE_X;
-        sizeY = SIZE_Y;
+        super(x, y, SIZE_X, SIZE_Y);
         this.direction = direction;
     }
 

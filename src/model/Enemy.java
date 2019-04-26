@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Enemy extends Moveable {
+public class Enemy extends MoveableObject {
 
     public static final int FIRING_DELAY = 1000;
     public static final int SPEED = 5;
@@ -26,9 +26,7 @@ public class Enemy extends Moveable {
     private boolean dirY;
 
     public Enemy(int x, int y) {
-        super(x, y);
-        sizeX = SIZE_X;
-        sizeY = SIZE_Y;
+        super(x, y, SIZE_X, SIZE_Y);
         isDead = false;
         projectiles = new ArrayList<>();
         random = new Random();

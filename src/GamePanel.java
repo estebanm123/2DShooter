@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
 
-    public static final int ONE_PIXEL_OFFSET = 1;
+    public static final int ONE_PIXEL_OFFSET = 1; // used when adjusting the position of player gun visual
     private GameModel gameModel;
 
     public GamePanel(GameModel gameModel) {

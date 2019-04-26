@@ -12,12 +12,14 @@ public class KeyBindings {
     public static final int SOUTH = 2;
     public static final int EAST = 3;
 
+    private Player player;
     private GamePanel gamePanel;
     private boolean[] keysPressed; // used to track movement keys pressed: for repeated opposite same-axis movement
 
     public KeyBindings(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        keysPressed = new boolean[4];
+        player = gamePanel.getGameModel().getPlayer();
+        keysPressed = new boolean[4]; // used for movement keys only right now
     }
 
     // Requires valid key name; getKeyStroke(String s) has parsing documentation
@@ -55,35 +57,35 @@ public class KeyBindings {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Player p = gamePanel.getGameModel().getPlayer();
             keysPressed[direction] = pressed;
+            int speed = player.getMovementSpeed();
             switch (direction) {
                 case NORTH:
                     if (pressed) {
-                        p.setDy(-Player.SPEED);
+                        player.setDy(-speed);
                     } else if (!keysPressed[SOUTH]) { // when the key is released and if player hasn't pressed the opposite direction at the same time
-                        p.setDy(0);
+                        player.setDy(0);
                     }
                     break;
                 case WEST:
                     if (pressed) {
-                        p.setDx(-Player.SPEED);
+                        player.setDx(-speed);
                     } else if (!keysPressed[EAST]) {
-                        p.setDx(0);
+                        player.setDx(0);
                     }
                     break;
                 case SOUTH:
                     if (pressed) {
-                        p.setDy(Player.SPEED);
+                        player.setDy(speed);
                     } else if (!keysPressed[NORTH]) {
-                        p.setDy(0);
+                        player.setDy(0);
                     }
                     break;
                 case EAST:
                     if (pressed) {
-                        p.setDx(Player.SPEED);
+                        player.setDx(speed);
                     } else if (!keysPressed[WEST]) {
-                        p.setDx(0);
+                        player.setDx(0);
                     }
                     break;
             }
@@ -96,20 +98,20 @@ public class KeyBindings {
         private boolean hasFired;
 
         public FireAction() {
-            fireTimer = new Timer(Player.FIRE_DELAY, new ActionListener() { // sets up a timer to add delay between shots fired
+            fireTimer = new Timer(player.getFiringSpeedDelay(), new ActionListener() { // sets up a timer to add delay between shots fired
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     hasFired = false;
                 }
             });
-            fireTimer.setInitialDelay(Player.FIRE_DELAY);
+            fireTimer.setInitialDelay(player.getFiringSpeedDelay());
             fireTimer.start();
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!hasFired) {
-                gamePanel.getGameModel().getPlayer().fireProjectile();
+                player.fireProjectile();
                 hasFired = true;
             }
 
@@ -120,7 +122,7 @@ public class KeyBindings {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            gamePanel.getGameModel().getPlayer().switchFireDirection();
+            player.switchFireDirection();
         }
     }
 

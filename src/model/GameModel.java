@@ -82,32 +82,32 @@ public class GameModel {
     }
 
     // returns true if the object's coordinates are not used by a player, any missiles, and any enemies
-    private boolean coordinatesNotOccupied(Moveable m) {
+    private boolean coordinatesNotOccupied(GameObject g) {
         List<Projectile> cumulativeProjectiles = player.getProjectiles();
         //checks each enemies' position and adds their projectiles to a cumulative list
         for (Enemy e : enemies) {
-            if (coordinatesOverlap(e, m)) return false;
+            if (coordinatesOverlap(e, g)) return false;
             cumulativeProjectiles.addAll(e.getProjectiles());
         }
         //check each projectiles' overlap
         for (Projectile p : cumulativeProjectiles) {
-            if (coordinatesOverlap(p, m)) return false;
+            if (coordinatesOverlap(p, g)) return false;
         }
         return true;
     }
 
 
     //public for testing
-    public boolean coordinatesOverlap(Moveable m1, Moveable m2) {
-        return (xCoordinatesOverlap(m1, m2) && yCoordinatesOverlap(m1, m2));
+    public static boolean coordinatesOverlap(GameObject g1, GameObject g2) {
+        return (xCoordinatesOverlap(g1, g2) && yCoordinatesOverlap(g1, g2));
     }
 
-    private boolean xCoordinatesOverlap(Moveable m1, Moveable m2) {
-        return m1.getX() <= m2.getX() + m2.getSizeX() && m1.getX() + m1.getSizeX() >= m2.getX();
+    private static boolean xCoordinatesOverlap(GameObject g1, GameObject g2) {
+        return g1.getX() <= g2.getX() + g2.getSizeX() && g1.getX() + g1.getSizeX() >= g2.getX();
     }
 
-    private boolean yCoordinatesOverlap(Moveable m1, Moveable m2) {
-        return m1.getY() <= m2.getY() + m2.getSizeY() && m1.getY() + m1.getSizeY() >= m2.getY();
+    private static boolean yCoordinatesOverlap(GameObject g1, GameObject g2) {
+        return g1.getY() <= g2.getY() + g2.getSizeY() && g1.getY() + g1.getSizeY() >= g2.getY();
     }
 
     private void removeProjectilesBeyondBounds() {
@@ -148,8 +148,7 @@ public class GameModel {
     private void checkPlayerEnemyCollision() {
         for (Enemy e : enemies) {
             if (coordinatesOverlap(player, e)) {
-
-                player.setHit(true);
+                player.getHit();
             }
         }
     }
