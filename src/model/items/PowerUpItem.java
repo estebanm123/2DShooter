@@ -7,7 +7,7 @@ import java.awt.*;
 public abstract class PowerUpItem extends GameObject {
 
     public static final int SIZE_X = 10;
-    public static final int SIZE_Y = 15;
+    public static final int SIZE_Y = 20;
     public static final int NUM_OF_TYPES = 3;
 
     private String type;

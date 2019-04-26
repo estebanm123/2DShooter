@@ -34,7 +34,7 @@ public class GameModel {
         powerUpItems = new ArrayList<>();
         maxEnemies = MAX_ENEMIES_INITIAL;
         random = new Random();
-        generateNewEnemies();
+        generateEnemies();
     }
 
     public Player getPlayer() {
@@ -45,158 +45,76 @@ public class GameModel {
         return enemies;
     }
 
+    public List<Enemy> getDeadEnemies() {return deadEnemies;}
+
     public List<PowerUpItem> getPowerUpItems() {
         return powerUpItems;
     }
 
     public void update() {
-        moveEntities();
-        checkCollisions();
-        handleDeadEnemies();
-        removeProjectilesBeyondBounds();
+        handleEnemies();
+        handlePlayer();
     }
 
-    private void moveEntities() {
+    private void handlePlayer() {
         player.move();
-        moveProjectiles();
-        moveEnemies();
+        handlePlayerProjectiles();
+        checkPlayerCollisions();
     }
 
-    private void moveEnemies() {
-        for (Enemy e : enemies) {
-            e.move();
-        }
-    }
-
-    private void moveProjectiles() {
-        for (Projectile p : player.getProjectiles()) {
-            p.move();
-        }
-        moveEnemyProjectiles();
-    }
-
-    private void moveEnemyProjectiles() {
-        for (Enemy e : enemies) {
-            for (Projectile p : e.getProjectiles()) {
-                p.move();
-            }
-        }
-    }
-
-    private Enemy randomEnemy() {
-        int x = random.nextInt(GameModel.WIDTH - (GameModel.WIDTH / 2)) + GameModel.WIDTH / 2;  // enemies can only spawn in half the screen
-        int y = random.nextInt(GameModel.HEIGHT);
-        return new Enemy(x, y);
-    }
-
-    // returns true if the object's coordinates are not used by a player, any missiles, and any enemies
-    private boolean coordinatesNotOccupied(GameObject g) {
-        List<Projectile> cumulativeProjectiles = player.getProjectiles();
-        //checks each enemies' position and adds their projectiles to a cumulative list
-        for (Enemy e : enemies) {
-            if (coordinatesOverlap(e, g)) return false;
-            cumulativeProjectiles.addAll(e.getProjectiles());
-        }
-        //check each projectiles' overlap
-        for (Projectile p : cumulativeProjectiles) {
-            if (coordinatesOverlap(p, g)) return false;
-        }
-        return true;
-    }
-
-
-    //public for testing
-    public static boolean coordinatesOverlap(GameObject g1, GameObject g2) {
-        return (xCoordinatesOverlap(g1, g2) && yCoordinatesOverlap(g1, g2));
-    }
-
-    private static boolean xCoordinatesOverlap(GameObject g1, GameObject g2) {
-        return g1.getX() <= g2.getX() + g2.getSizeX() && g1.getX() + g1.getSizeX() >= g2.getX();
-    }
-
-    private static boolean yCoordinatesOverlap(GameObject g1, GameObject g2) {
-        return g1.getY() <= g2.getY() + g2.getSizeY() && g1.getY() + g1.getSizeY() >= g2.getY();
-    }
-
-    private void removeProjectilesBeyondBounds() {
-        removePlayerProjectiles();
-        removeEnemyProjectiles();
-
-    }
-
-    private void removeEnemyProjectiles() {
-        for (Enemy e : enemies) {
-            List<Projectile> enemyProjectilesCopy = new ArrayList<>(e.getProjectiles());
-            for (Projectile p : enemyProjectilesCopy) {
-                if (p.getX() > GameModel.WIDTH || p.getY() < 0) { // a projectile can only move on the x axis
-                    e.getProjectiles().remove(p);
-                }
-            }
-        }
-
-    }
-
-    private void removePlayerProjectiles() {
-        List<Projectile> playerProjectilesCopy = new ArrayList<>(player.getProjectiles());
-        for (Projectile p : playerProjectilesCopy) {
-            if (p.getX() > GameModel.WIDTH || p.getY() < 0) { // a projectile can only move on the x axis
-                player.getProjectiles().remove(p);
-            }
-        }
-    }
-
-    private void fireEnemyProjectiles() {
-    }
-
-    private void checkCollisions() {
-        checkEnemyHit();
-        checkPlayerEnemyCollision();
+    private void checkPlayerCollisions() {
         checkItemPlayerCollision();
     }
 
-    private void checkItemPlayerCollision() {
-        List<PowerUpItem> powerUpItemsCopy = new ArrayList<>(powerUpItems);
-        for (PowerUpItem pui : powerUpItemsCopy) {
-            if (coordinatesOverlap(player, pui)) {
-                boolean pickUp = player.takePowerUp(pui);
-                if (pickUp) {
-                    powerUpItems.remove(pui);
-                    // UPDATE STATS
-                }
-            }
-        }
-    }
-
-
-    private void checkPlayerEnemyCollision() {
-        for (Enemy e : enemies) {
-            if (coordinatesOverlap(player, e) && !player.isHit()) {
-                player.getHit();
-            }
-        }
-    }
-
-    private void checkEnemyHit() {
+    // moves all player projectiles and removes the ones that are out of bounds
+    private void handlePlayerProjectiles() {
         List<Projectile> playerProjectilesCopy = new ArrayList<>(player.getProjectiles());
-        for (Enemy e : enemies) {
-            for (Projectile p : playerProjectilesCopy) { // check if each projectile has hit an enemy
-                if (coordinatesOverlap(e, p)) {
-                    // UPDATE SCORE PANEL OR WHATEVER
-                    e.die();
-                    player.getProjectiles().remove(p);
-                }
+        for (Projectile p : playerProjectilesCopy) {
+            p.move();
+            if (p.getX() > GameModel.WIDTH || p.getY() < 0) { // a projectile can only move on the x axis
+                player.getProjectiles().remove(p);
+                System.out.println(player.getProjectiles()); // FOR TESTING
+            }
+        }
+    }
+
+    private void handleEnemies() {
+        List<Enemy> enemiesCopy = new ArrayList<>(enemies);
+        List<Projectile> playerProjectilesCopy = new ArrayList<>(player.getProjectiles());
+        for (Enemy e : enemiesCopy) {
+            e.move();
+            checkEnemyCollisions(e, playerProjectilesCopy);
+            handleDeadEnemies(e);
+        }
+    }
+
+    private void checkEnemyCollisions(Enemy e, List<Projectile> playerProjectilesCopy) {
+        checkEnemyHit(e, playerProjectilesCopy);
+        checkEnemyPlayerCollision(e);
+    }
+
+    private void checkEnemyHit(Enemy e, List<Projectile> playerProjectilesCopy) {
+        for (Projectile p : playerProjectilesCopy) { // check if each player projectile has hit an enemy
+            if (coordinatesOverlap(e, p)) {
+                // UPDATE SCORE PANEL OR WHATEVER
+                e.die();
+                player.getProjectiles().remove(p);
             }
         }
 
     }
 
-    private void handleDeadEnemies() {
-        List<Enemy> enemiesCopy = new ArrayList<>(enemies);
-        for (Enemy enemy : enemiesCopy) {
-            if (enemy.isDead() && !deadEnemies.contains(enemy)) {
-                removeEnemy(enemy);
-                generateNewEnemy();
-            }
+    private void checkEnemyPlayerCollision(Enemy e) {
+        if (coordinatesOverlap(player, e) && !player.isHit()) {
+            player.getHit();
+            //UPDATE SCORE PANEL
+        }
+    }
+
+    private void handleDeadEnemies(Enemy e) {
+        if (e.isDead() && !deadEnemies.contains(e)) {
+            removeEnemy(e);
+            generateNewEnemy();
         }
 
     }
@@ -225,7 +143,7 @@ public class GameModel {
     }
 
     // used during initialization
-    private void generateNewEnemies() {
+    private void generateEnemies() {
         while (enemies.size() < maxEnemies) {
             addEnemy();
         }
@@ -233,20 +151,71 @@ public class GameModel {
 
     // adds a timer to delay enemy removal by DEAD_ENEMY_DELAY ms
     private void removeEnemy(Enemy enemy) {
-        deadEnemies.add(enemy);
+        deadEnemies.add(enemy); // enemy added to a separate list to avoid constantly looping over dead enemies
+        enemies.remove(enemy);
         Timer disappearTimer = new Timer(DEAD_ENEMY_DELAY, null);
         disappearTimer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { // timer is used to delay enemy removal
                 PowerUpItem pui = enemy.dropItem();
                 if (pui != null) powerUpItems.add(pui);
-                enemies.remove(enemy);
+                deadEnemies.remove(enemy);
                 disappearTimer.stop();
             }
         });
         disappearTimer.setInitialDelay(DEAD_ENEMY_DELAY);
         disappearTimer.setRepeats(false);
         disappearTimer.start();
+    }
+
+    private Enemy randomEnemy() {
+        int x = random.nextInt(GameModel.WIDTH - (GameModel.WIDTH / 2)) + GameModel.WIDTH / 2;  // enemies can only spawn in half the screen
+        int y = random.nextInt(GameModel.HEIGHT);
+        return new Enemy(x, y);
+    }
+
+    // returns true if the object's coordinates are not used by a player, any missiles, and any enemies
+    private boolean coordinatesNotOccupied(GameObject g) {
+        //checks overlap with player
+        if (coordinatesOverlap(player, g)) return false;
+
+        List<Projectile> cumulativeProjectiles = player.getProjectiles();
+        //checks each enemies' position and adds their projectiles to a cumulative list
+        for (Enemy e : enemies) {
+            if (coordinatesOverlap(e, g)) return false;
+            cumulativeProjectiles.addAll(e.getProjectiles());
+        }
+        //check each projectiles' overlap
+        for (Projectile p : cumulativeProjectiles) {
+            if (coordinatesOverlap(p, g)) return false;
+        }
+        return true;
+    }
+
+    //public for testing
+    public static boolean coordinatesOverlap(GameObject g1, GameObject g2) {
+        return (xCoordinatesOverlap(g1, g2) && yCoordinatesOverlap(g1, g2));
+    }
+
+    private static boolean xCoordinatesOverlap(GameObject g1, GameObject g2) {
+        return g1.getX() <= g2.getX() + g2.getSizeX() && g1.getX() + g1.getSizeX() >= g2.getX();
+    }
+
+    private static boolean yCoordinatesOverlap(GameObject g1, GameObject g2) {
+        return g1.getY() <= g2.getY() + g2.getSizeY() && g1.getY() + g1.getSizeY() >= g2.getY();
+    }
+
+    private void checkItemPlayerCollision() {
+        List<PowerUpItem> powerUpItemsCopy = new ArrayList<>(powerUpItems);
+        for (PowerUpItem pui : powerUpItemsCopy) {
+            if (coordinatesOverlap(player, pui)) {
+                boolean pickUp = player.takePowerUp(pui);
+                if (pickUp) {
+                    powerUpItems.remove(pui);
+                    // UPDATE STATS
+                }
+            }
+        }
     }
 }
 

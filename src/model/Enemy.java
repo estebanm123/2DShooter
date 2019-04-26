@@ -18,13 +18,13 @@ public class Enemy extends MoveableObject {
 
     public static final int FIRING_DELAY = 1000;
     public static final int DROP_ITEM_CHANCE_MAX = 100;
-    public static final int DROP_ITEM_CHANCE = 100;
+    public static final int DROP_ITEM_CHANCE = 30;
     public static final int SPEED = 5;
     public static final int SIZE_X = 50;
     public static final int SIZE_Y = 40;
     public static final Color COLOR = new Color(250, 250, 250);
     public static final Color DEAD_COLOR = new Color(206, 28, 55);
-    public static final int MOVEMENT_TIMER_DELAY = 400;
+    public static final int MOVEMENT_TIMER_DELAY = 500;
 
     private boolean isDead;
     private List<Projectile> projectiles;

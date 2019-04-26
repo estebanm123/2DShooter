@@ -72,13 +72,12 @@ public class GamePanel extends JPanel {
 
     private void drawEnemies(Graphics2D g2d) {
         for (Enemy e : gameModel.getEnemies()) {
-            if (e.isDead()) {
-                g2d.setColor(Enemy.DEAD_COLOR);
-                g2d.fillOval(e.getX(), e.getY(), Enemy.SIZE_X, Enemy.SIZE_Y);
-            } else {
-                g2d.setColor(Enemy.COLOR);
-                g2d.fillOval(e.getX(), e.getY(), Enemy.SIZE_X, Enemy.SIZE_Y);
-            }
+            g2d.setColor(Enemy.COLOR);
+            g2d.fillOval(e.getX(), e.getY(), Enemy.SIZE_X, Enemy.SIZE_Y);
+        }
+        for (Enemy e : gameModel.getDeadEnemies()) {
+            g2d.setColor(Enemy.DEAD_COLOR);
+            g2d.fillOval(e.getX(), e.getY(), Enemy.SIZE_X, Enemy.SIZE_Y);
         }
     }
 
