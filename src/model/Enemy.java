@@ -1,5 +1,11 @@
 package model;
 
+import model.items.FiringSpeedBoost;
+import model.items.HealthBoost;
+import model.items.PowerUpItem;
+import model.items.SpeedBoost;
+import model.items.exceptions.InvalidNumberOfPowerUpItemTypes;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +17,8 @@ import java.util.Random;
 public class Enemy extends MoveableObject {
 
     public static final int FIRING_DELAY = 1000;
+    public static final int DROP_ITEM_CHANCE_MAX = 100;
+    public static final int DROP_ITEM_CHANCE = 100;
     public static final int SPEED = 5;
     public static final int SIZE_X = 50;
     public static final int SIZE_Y = 40;
@@ -48,10 +56,6 @@ public class Enemy extends MoveableObject {
         return isDead;
     }
 
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
     public List<Projectile> getProjectiles() {
         return projectiles;
     }
@@ -72,4 +76,32 @@ public class Enemy extends MoveableObject {
             checkBoundary();
         }
     }
+
+    // isDead changes to true and has a random chance of dropping (returning) a PowerUpItem. Return null if no item is dropped
+    public void die(){
+        isDead = true;
+    }
+
+    // randomly drops (returns) an item. Returns true if it does, false otherwise.
+    public PowerUpItem dropItem() {
+        int randInt = random.nextInt(DROP_ITEM_CHANCE_MAX + 1);
+        if (randInt <= DROP_ITEM_CHANCE) {
+            return randomPowerUp();
+        } else {
+            return null;
+        }
+    }
+
+    // returns a random power up at the center of the enemy's (death) location
+    private PowerUpItem randomPowerUp() {
+        int type = random.nextInt(PowerUpItem.NUM_OF_TYPES);
+        switch (type) {
+            case(0): return new HealthBoost(x + (sizeX / 2), y - (sizeY / 2));
+            case(1): return new SpeedBoost(x + (sizeX / 2), y - (sizeY / 2));
+            case(2): return new FiringSpeedBoost(x + (sizeX / 2), y - (sizeY / 2));
+        }
+        throw new InvalidNumberOfPowerUpItemTypes();
+    }
+
+
 }

@@ -9,7 +9,7 @@ public class HealthBoost extends PowerUpItem {
     public static final String TYPE = "Health";
 
     public HealthBoost(int x, int y) {
-        super(x, y, STAT_BOOST, TYPE);
+        super(x, y, STAT_BOOST, TYPE, COLOR);
     }
 
 

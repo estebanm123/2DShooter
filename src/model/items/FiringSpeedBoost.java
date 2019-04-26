@@ -11,6 +11,6 @@ public class FiringSpeedBoost extends PowerUpItem {
     public static final String TYPE = "FiringSpeed";
 
     public FiringSpeedBoost(int x, int y) {
-        super(x, y, STATBOOST, TYPE);
+        super(x, y, STATBOOST, TYPE, COLOR);
     }
 }

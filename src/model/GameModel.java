@@ -1,6 +1,8 @@
 package model;
 
 
+import model.items.PowerUpItem;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,7 @@ public class GameModel {
     private Player player;
     private List<Enemy> enemies;
     private List<Enemy> deadEnemies;
+    private List<PowerUpItem> powerUpItems;
     private int maxEnemies;
     private Random random; // used for generating random enemy spawn
 
@@ -28,6 +31,7 @@ public class GameModel {
         player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
         enemies = new ArrayList<>();
         deadEnemies = new ArrayList<>();
+        powerUpItems = new ArrayList<>();
         maxEnemies = MAX_ENEMIES_INITIAL;
         random = new Random();
         generateNewEnemies();
@@ -39,6 +43,10 @@ public class GameModel {
 
     public List<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public List<PowerUpItem> getPowerUpItems() {
+        return powerUpItems;
     }
 
     public void update() {
@@ -143,11 +151,26 @@ public class GameModel {
     private void checkCollisions() {
         checkEnemyHit();
         checkPlayerEnemyCollision();
+        checkItemPlayerCollision();
     }
+
+    private void checkItemPlayerCollision() {
+        List<PowerUpItem> powerUpItemsCopy = new ArrayList<>(powerUpItems);
+        for (PowerUpItem pui : powerUpItemsCopy) {
+            if (coordinatesOverlap(player, pui)) {
+                boolean pickUp = player.takePowerUp(pui);
+                if (pickUp) {
+                    powerUpItems.remove(pui);
+                    // UPDATE STATS
+                }
+            }
+        }
+    }
+
 
     private void checkPlayerEnemyCollision() {
         for (Enemy e : enemies) {
-            if (coordinatesOverlap(player, e)) {
+            if (coordinatesOverlap(player, e) && !player.isHit()) {
                 player.getHit();
             }
         }
@@ -159,7 +182,7 @@ public class GameModel {
             for (Projectile p : playerProjectilesCopy) { // check if each projectile has hit an enemy
                 if (coordinatesOverlap(e, p)) {
                     // UPDATE SCORE PANEL OR WHATEVER
-                    e.setDead(true);
+                    e.die();
                     player.getProjectiles().remove(p);
                 }
             }
@@ -215,6 +238,8 @@ public class GameModel {
         disappearTimer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { // timer is used to delay enemy removal
+                PowerUpItem pui = enemy.dropItem();
+                if (pui != null) powerUpItems.add(pui);
                 enemies.remove(enemy);
                 disappearTimer.stop();
             }
