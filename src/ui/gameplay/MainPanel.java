@@ -1,26 +1,44 @@
+package ui.gameplay;
+
 import model.GameModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-public class Game extends JFrame {
+public class MainPanel extends JPanel {
 
     public static final int DELAY = 1000 / 60;
+
     private GameModel gameModel;
     private GamePanel gamePanel;
+    private ScorePanel scorePanel;
 
-    public Game() {
-        super("TBD");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameModel = new GameModel();
-        gamePanel = new GamePanel(gameModel);
+
+    //Starts gameplay when an instance is created
+    public MainPanel(int difficulty) {
+        gameModel = new GameModel(difficulty);
+        initPanels();
         initKeyBindings();
-        add(gamePanel);
-        pack();
-        setVisible(true);
         addTimer();
+    }
+
+    private void initPanels() {
+        setLayout(new GridBagLayout());
+        scorePanel = new ScorePanel();
+        gameModel.addObserver(scorePanel);
+        gamePanel = new GamePanel(gameModel);
+        gamePanel.setFocusable(true);
+        gamePanel.setRequestFocusEnabled(true);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        add(gamePanel, c);
+        c.gridx = 0;
+        c.gridy = 0; // the score panel is set to be on top of the gameplay panel
+        add(scorePanel, c);
+       // gamePanel.grabFocus();
     }
 
     private void addTimer() {
@@ -42,10 +60,9 @@ public class Game extends JFrame {
         kb.addMoveAction("D", KeyBindings.EAST);
         kb.addFireAction("SPACE");
         kb.addSwitchFireDirectionAction("F");
-
     }
 
-    public static void main(String[] args) {
-        new Game();
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

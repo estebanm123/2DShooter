@@ -1,4 +1,7 @@
+package ui.gameplay;
+
 import model.Player;
+import ui.gameplay.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

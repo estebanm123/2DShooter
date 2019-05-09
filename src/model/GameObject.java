@@ -1,6 +1,6 @@
 package model;
 
-// This abstract class dictates the general attributes of all game objects, Moveable or not
+// This abstract class dictates the general attributes of all gameplay objects, Moveable or not
 // such as by enabling the creation of a unified method that checks object location overlap (GameModel.coordinatesOverlap(MoveableObject m1, MoveableObject m2))
 public abstract class GameObject {
 

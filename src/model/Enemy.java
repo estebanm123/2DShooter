@@ -16,16 +16,21 @@ import java.util.Random;
 
 public class Enemy extends MoveableObject {
 
-    public static final int FIRING_DELAY = 1000;
     public static final int DROP_ITEM_CHANCE_MAX = 100;
     public static final int DROP_ITEM_CHANCE = 30;
-    public static final int SPEED = 5;
-    public static final int SIZE_X = 50;
-    public static final int SIZE_Y = 40;
-    public static final Color COLOR = new Color(250, 250, 250);
-    public static final Color DEAD_COLOR = new Color(206, 28, 55);
+    public static final int NORMAL_SPEED = 5;
+    public static final int EASY_SPEED = 3;
     public static final int MOVEMENT_TIMER_DELAY = 500;
 
+    public static final int SIZE_X = 50;
+    public static final int SIZE_Y = 40;
+    public static final Color COLOR = new Color(198, 156, 158);
+    public static final Color DEAD_COLOR = new Color(122, 24, 23);
+    public static final int EYE_SIZE_X = 7;
+    public static final int EYE_SIZE_Y = 7;
+    public static final Color EYE_COLOR = new Color(250, 100, 100);
+
+    private static int speed;
     private boolean isDead;
     private List<Projectile> projectiles;
     private Timer movementTimer;
@@ -39,6 +44,10 @@ public class Enemy extends MoveableObject {
         projectiles = new ArrayList<>();
         random = new Random();
         addMovementTimer();
+    }
+
+    public static void setEnemySpeed(int s) {
+        speed = s;
     }
 
     private void addMovementTimer() {
@@ -68,11 +77,12 @@ public class Enemy extends MoveableObject {
         projectiles.add(new Projectile(x, y + SIZE_Y / 2, Projectile.RIGHT));
     }
 
+    //REQUIRES setSpeed to be called, so the speed of all enemies have been set (this is for setting the game's difficulty)
     @Override
     public void move() { // always moves in a random direction
         if (!isDead) {
-            x += dirX ? -SPEED : SPEED;
-            y += dirY ? -SPEED : SPEED;
+            x += dirX ? -speed : speed;
+            y += dirY ? -speed : speed;
             checkBoundary();
         }
     }

@@ -1,16 +1,26 @@
 package model;
 
 
+import model.items.FiringSpeedBoost;
+import model.items.HealthBoost;
 import model.items.PowerUpItem;
+import model.items.SpeedBoost;
+import ui.HomePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class GameModel {
+
+    // these constants are PropertyChangeEvent names
+    public static final String KILL = "kill";
+    public static final String PLAYER_HIT = "player hit";
 
     public static final int WIDTH = 700;
     public static final int HEIGHT = 700;
@@ -20,14 +30,17 @@ public class GameModel {
     public static final int DEAD_ENEMY_DELAY = 500;
     public static final int NEW_ENEMY_DELAY = DEAD_ENEMY_DELAY + 3000;
 
+    private int difficulty;
     private Player player;
+    private int killCount;
     private List<Enemy> enemies;
     private List<Enemy> deadEnemies;
     private List<PowerUpItem> powerUpItems;
     private int maxEnemies;
-    private Random random; // used for generating random enemy spawn
+    private Random random;
+    private PropertyChangeSupport support; // used to update scorePanel and other observers
 
-    public GameModel() {
+    public GameModel(int difficulty) {
         player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y);
         enemies = new ArrayList<>();
         deadEnemies = new ArrayList<>();
@@ -35,6 +48,13 @@ public class GameModel {
         maxEnemies = MAX_ENEMIES_INITIAL;
         random = new Random();
         generateEnemies();
+        support = new PropertyChangeSupport(this);
+        killCount = 0;
+        initDifficulty(difficulty);
+    }
+
+    public void addObserver(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
     }
 
     public Player getPlayer() {
@@ -73,7 +93,6 @@ public class GameModel {
             p.move();
             if (p.getX() > GameModel.WIDTH || p.getY() < 0) { // a projectile can only move on the x axis
                 player.getProjectiles().remove(p);
-                System.out.println(player.getProjectiles()); // FOR TESTING
             }
         }
     }
@@ -96,7 +115,7 @@ public class GameModel {
     private void checkEnemyHit(Enemy e, List<Projectile> playerProjectilesCopy) {
         for (Projectile p : playerProjectilesCopy) { // check if each player projectile has hit an enemy
             if (coordinatesOverlap(e, p)) {
-                // UPDATE SCORE PANEL OR WHATEVER
+                support.firePropertyChange(KILL, killCount, ++killCount);
                 e.die();
                 player.getProjectiles().remove(p);
             }
@@ -106,8 +125,9 @@ public class GameModel {
 
     private void checkEnemyPlayerCollision(Enemy e) {
         if (coordinatesOverlap(player, e) && !player.isHit()) {
+            int prevHealth = player.getHealth();
             player.getHit();
-            //UPDATE SCORE PANEL
+            support.firePropertyChange(PLAYER_HIT, prevHealth, player.getHealth());
         }
     }
 
@@ -212,9 +232,27 @@ public class GameModel {
                 boolean pickUp = player.takePowerUp(pui);
                 if (pickUp) {
                     powerUpItems.remove(pui);
-                    // UPDATE STATS
+                    notifyObserversPowerUpPickedUp(pui);
                 }
             }
+        }
+    }
+
+    private void notifyObserversPowerUpPickedUp(PowerUpItem pui) {
+        if (pui.getType().equals(HealthBoost.TYPE)) {
+            support.firePropertyChange(HealthBoost.TYPE, null, player.getHealth());
+        } else if (pui.getType().equals(FiringSpeedBoost.TYPE)) {
+            support.firePropertyChange(FiringSpeedBoost.TYPE, null, player.getFiringSpeedDelay());
+        } else if (pui.getType().equals(SpeedBoost.TYPE)) {
+            support.firePropertyChange(SpeedBoost.TYPE, null, player.getMovementSpeed());
+        }
+    }
+
+    private void initDifficulty(int difficulty) {
+        if (difficulty == HomePanel.EASY) {
+            Enemy.setEnemySpeed(Enemy.EASY_SPEED);
+        } else {
+            Enemy.setEnemySpeed(Enemy.NORMAL_SPEED);
         }
     }
 }
