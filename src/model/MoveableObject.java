@@ -1,14 +1,16 @@
 package model;
 
 
+import java.awt.*;
+
 // this abstract class was created to reduce code duplication and ease managing the different moveable objects on screen
 public abstract class MoveableObject extends GameObject {
 
-    public MoveableObject(int x, int y, int sizeX, int sizeY) {
-        super(x, y, sizeX, sizeY);
+    public MoveableObject(int x, int y, int sizeX, int sizeY, Color color) {
+        super(x, y, sizeX, sizeY, color);
     }
 
-    abstract void move();
+    public abstract void move();
 
     public void checkBoundary() {
         if (x > GameModel.WIDTH - sizeX) { // checking if moving past screen boundaries
@@ -23,7 +25,5 @@ public abstract class MoveableObject extends GameObject {
             y = 0;
         }
     }
-
-
 
 }

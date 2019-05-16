@@ -1,6 +1,7 @@
 package ui;
 
-import com.sun.tools.javac.Main;
+import model.GameModel;
+import ui.gameplay.GamePanel;
 import ui.gameplay.MainPanel;
 
 import javax.swing.*;
@@ -11,6 +12,9 @@ import java.beans.PropertyChangeListener;
 
 public class Game extends JFrame implements PropertyChangeListener {
 
+    public static final int WIDTH = GameModel.WIDTH;
+    public static final int HEIGHT = GameModel.HEIGHT + GameModel.HEIGHT / 10;
+
     private MainPanel mainPanel;
     private InstructionsPanel instructionsPanel;
     private HomePanel homePanel;
@@ -18,9 +22,12 @@ public class Game extends JFrame implements PropertyChangeListener {
     public Game() {
         super("Deep Sea Shooter");
         initMenus();
+//        mainPanel = new MainPanel(NORMAL);
+//        add(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardLayout cl = new CardLayout();
         setLayout(cl);
+        setUndecorated(true);
         setVisible(true);
         pack();
     }
@@ -36,22 +43,60 @@ public class Game extends JFrame implements PropertyChangeListener {
         add(homePanel);
     }
 
+    // receives alerts from the following classes:
+    //  - HomePanel for switching to how to play display and starting game
+    // - InstructionsPanel for switching back to HomePanel
+    // - MainPanel's GamePanel for restarting game and going back to menu from game over
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(HomePanel.HOW_TO_PLAY)) {
-            homePanel.setVisible(false);
-            instructionsPanel.setVisible(true);
-        } else if (evt.getPropertyName().equals(HomePanel.GAME_START)) {
-            remove(homePanel);
-            remove(instructionsPanel);
-            mainPanel = new MainPanel((Integer) evt.getNewValue());
-            add(mainPanel);
-            validate();
-            mainPanel.getGamePanel().grabFocus();
-        } else if (evt.getPropertyName().equals(InstructionsPanel.INSTRUCTIONS_BACK)) {
-            instructionsPanel.setVisible(false);
-            homePanel.setVisible(true);
+        switch (evt.getPropertyName()) {
+            case (HomePanel.HOW_TO_PLAY):
+                homePanel.setVisible(false);
+                instructionsPanel.setVisible(true);
+                break;
+            case (HomePanel.GAME_START):
+                startGame(evt);
+                break;
+            case (HomePanel.QUIT):
+                dispose();
+                break;
+            case (InstructionsPanel.INSTRUCTIONS_BACK):
+                instructionsPanel.setVisible(false);
+                homePanel.setVisible(true);
+                break;
+            case (GamePanel.BACK_TO_MENU):
+                remove(mainPanel);
+                add(homePanel);
+                add(instructionsPanel);
+                break;
+            case (GamePanel.RESTART):
+                mainPanel.setEnabled(false);
+                remove(mainPanel);
+                mainPanel = new MainPanel(mainPanel.getDifficulty());
+                add(mainPanel);
+                mainPanel.getGamePanel().grabFocus();
+                validate();
+                break;
+            case (GamePanel.PAUSE_GAME):
+                mainPanel.pauseTimer();
+                break;
+            case (GamePanel.UN_PAUSE_GAME):
+                mainPanel.unPauseTimer();
+                break;
+//            case (PausePanel.RESTART):
+//
         }
+    }
+
+    private void startGame(PropertyChangeEvent evt) {
+        remove(homePanel);
+        remove(instructionsPanel);
+        mainPanel = new MainPanel((Integer) evt.getNewValue());
+        mainPanel.getGamePanel().addObserver(this);
+        mainPanel.getGamePanel().getPausePanel().addObserver(this);
+        add(mainPanel);
+        mainPanel.getGamePanel().grabFocus();
+        validate();
     }
 
     public static void main(String[] args) {

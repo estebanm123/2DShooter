@@ -1,7 +1,6 @@
 package ui;
 
 import model.GameModel;
-import ui.gameplay.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +11,8 @@ import java.beans.PropertyChangeSupport;
 
 public class HomePanel extends JPanel {
 
-    // constasnts used for PropertyChangeEvent names
+    // constants used for PropertyChangeEvent names
+    public static final String QUIT = "Quit";
     public static final String GAME_START = "Game Start";
     public static final String HOW_TO_PLAY = "How to play";
 
@@ -36,6 +36,7 @@ public class HomePanel extends JPanel {
     private JButton normalButton;
     private JButton startButton;
     private JLabel startLabel;
+    private JButton quitButton; // refactor into own class?
     private int difficultySelected;
     private GridBagConstraints c;
 
@@ -54,6 +55,7 @@ public class HomePanel extends JPanel {
         initInstructionsButton();
         initDifficultyButtons();
         initStartButton();
+        initQuitButton();
     }
 
     private void initGameTitleLabel() {
@@ -160,6 +162,21 @@ public class HomePanel extends JPanel {
             }
         });
         add(startButton, c);
+    }
+
+    private void initQuitButton() {
+        quitButton = new JButton();
+        createButton("QUIT", 13, quitButton, COLOR_BUTTON);
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                support.firePropertyChange(QUIT, null, null);
+            }
+        });
+        c.gridx = 2;
+        c.gridy = 6;
+        c.anchor = GridBagConstraints.LINE_END;
+        add(quitButton, c);
     }
 
     public void addObserver(PropertyChangeListener pcl) {

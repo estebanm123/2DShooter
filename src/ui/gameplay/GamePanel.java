@@ -1,29 +1,46 @@
 package ui.gameplay;
 
-import model.Enemy;
-import model.GameModel;
-import model.Player;
-import model.Projectile;
+import model.*;
+import model.enemies.Enemy;
 import model.items.PowerUpItem;
+import ui.PausePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements PropertyChangeListener {
+
+    public static final String RESTART = "Restart GamePanel";
+    public static final String BACK_TO_MENU = "Back to menu";
+    public static final String PAUSE_GAME = "Pause";
+    public static final String UN_PAUSE_GAME = "Unpause game";
 
     public static final int ONE_PIXEL_OFFSET = 1; // used when adjusting the position of player gun visual
     public static final Color COLOR = new Color(22, 35, 123);
   //  public static final Color COLOR = new Color(134, 199, 255);
 
-
-
     private GameModel gameModel;
+    private GridBagConstraints c;
+    private PropertyChangeSupport support;
+    private PausePanel pausePanel;
 
     public GamePanel(GameModel gameModel) {
+        setLayout(new GridBagLayout());
+        c = new GridBagConstraints();
         this.gameModel = gameModel;
+        pausePanel = new PausePanel();
+        add(pausePanel);
+        pausePanel.setEnabled(false);
+        pausePanel.setVisible(false);
         setPreferredSize(new Dimension(GameModel.WIDTH, GameModel.HEIGHT));
         setBackground(COLOR);
+        support = new PropertyChangeSupport(this);
     }
 
     public GameModel getGameModel() {
@@ -92,16 +109,18 @@ public class GamePanel extends JPanel {
 
     private void drawEnemies(Graphics2D g2d) {
         for (Enemy e : gameModel.getEnemies()) {
-            g2d.setColor(Enemy.COLOR);
-            g2d.fillOval(e.getX(), e.getY(), Enemy.SIZE_X, Enemy.SIZE_Y);
-            g2d.setColor(Enemy.EYE_COLOR);
+            g2d.setColor(e.getColor());
+            g2d.fillOval(e.getX(), e.getY(), e.getSizeX(), e.getSizeY());
             //eyes
-            g2d.fillOval(e.getX() + Enemy.SIZE_X / 4, e.getY() + Enemy.SIZE_Y / 4, Enemy.EYE_SIZE_X, Enemy.EYE_SIZE_Y);
-            g2d.fillOval(e.getX() + Enemy.SIZE_X / 2, e.getY() + Enemy.SIZE_Y / 4, Enemy.EYE_SIZE_X, Enemy.EYE_SIZE_Y);
+            if (e.getEye() != null) {
+                g2d.setColor(e.getEye().getColor());
+                g2d.fillOval(e.getX() + e.getSizeX() / 4, e.getY() + e.getSizeY() / 4, e.getEye().getSizeX(), e.getEye().getSizeY());
+                g2d.fillOval(e.getX() + e.getSizeX() / 2, e.getY() + e.getSizeY() / 4, e.getEye().getSizeX(), e.getEye().getSizeY());
+            }
         }
         for (Enemy e : gameModel.getDeadEnemies()) {
-            g2d.setColor(Enemy.DEAD_COLOR);
-            g2d.fillOval(e.getX(), e.getY(), Enemy.SIZE_X, Enemy.SIZE_Y);
+            g2d.setColor(e.getDeadColor());
+            g2d.fillOval(e.getX(), e.getY(), e.getSizeX(), e.getSizeY());
         }
     }
 
@@ -110,6 +129,87 @@ public class GamePanel extends JPanel {
             g2d.setColor(Projectile.COLOR);
             g2d.fillOval(p.getX(), p.getY(), Projectile.SIZE_X, Projectile.SIZE_Y);
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(GameModel.GAME_OVER)) {
+            remove(pausePanel);
+            createGameOverLabel();
+            createRestartButton();
+            createMenuButton();
+        }
+    }
+
+    private void createMenuButton() {
+        JButton menuButton = new JButton("BACK TO MENU");
+        menuButton.setFont(new Font("Impact", Font.PLAIN, 15));
+        menuButton.setFocusPainted(false);
+        menuButton.setBackground(Color.WHITE);
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                support.firePropertyChange(BACK_TO_MENU, null, null);
+            }
+        });
+        c.gridy = 1;
+        c.gridx = 1;
+        c.anchor = GridBagConstraints.LINE_START;
+        add(menuButton, c);
+        validate();
+    }
+
+    private void createRestartButton() {
+        JButton restartButton = new JButton("RESTART");
+        restartButton.setFont(new Font("Impact", Font.PLAIN, 15));
+        restartButton.setFocusPainted(false);
+        restartButton.setBackground(Color.WHITE);
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                support.firePropertyChange(RESTART, null, null);
+            }
+        });
+        c.gridy = 1;
+        c.gridx = 0;
+        c.anchor = GridBagConstraints.LINE_END;
+        add(restartButton, c);
+        validate();
+    }
+
+    private void createGameOverLabel() { // can refactor to be initialized like this then added and removed (same with above)
+        JLabel gameOverLabel = new JLabel("GAME OVER");
+        gameOverLabel.setBackground(COLOR);
+        gameOverLabel.setForeground(Color.WHITE);
+        gameOverLabel.setFont(new Font("Impact", Font.PLAIN, 50));
+        gameOverLabel.setOpaque(false);
+        c.gridy = 0;
+        c.gridwidth = 10;
+        c.anchor = GridBagConstraints.LINE_END;
+        add(gameOverLabel, c);
+        validate();
+    }
+
+    public void addObserver(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void pauseGame() {
+        support.firePropertyChange(PAUSE_GAME, null, null);
+        pausePanel.setVisible(true);
+        pausePanel.setEnabled(true);
+        //validate();
+    }
+
+    public void unPauseGame() {
+        support.firePropertyChange(UN_PAUSE_GAME, null, null);
+        pausePanel.setVisible(false);
+        pausePanel.setEnabled(false);
+        // validate();
+    }
+
+    public PausePanel getPausePanel() {
+        return pausePanel;
     }
 
 }

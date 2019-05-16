@@ -47,6 +47,33 @@ public class KeyBindings {
         gamePanel.getActionMap().put(name, new SwitchFireDirectionAction());
     }
 
+    // Requires valid key name; getKeyStroke(String s) has parsing documentation
+    public void addPauseAction(String name) {
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke("pressed " + name), name);
+        gamePanel.getActionMap().put(name, new PauseAction());
+    }
+
+    private class PauseAction extends AbstractAction {
+
+        private boolean paused;
+
+        public PauseAction() {
+            paused = false;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!gamePanel.getGameModel().isGameOver())
+                if (!paused) {
+                    paused = true;
+                    gamePanel.pauseGame();
+                } else {
+                    paused = false;
+                    gamePanel.unPauseGame();
+                }
+        }
+    }
+
     private class MoveAction extends AbstractAction {
 
         private int direction;

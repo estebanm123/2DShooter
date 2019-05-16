@@ -14,7 +14,7 @@ public class Projectile extends MoveableObject {
     private boolean direction;
 
     public Projectile(int x, int y, boolean direction) {
-        super(x, y, SIZE_X, SIZE_Y);
+        super(x, y, SIZE_X, SIZE_Y, COLOR);
         this.direction = direction;
     }
 

@@ -10,15 +10,13 @@ public abstract class PowerUpItem extends GameObject {
     public static final int SIZE_Y = 20;
     public static final int NUM_OF_TYPES = 3;
 
-    private String type;
-    private int statBoost;
-    private Color color;
+    protected String type;
+    protected int statBoost;
 
     public PowerUpItem(int x, int y, int statBoost, String type, Color color) {
-        super(x, y, SIZE_X, SIZE_Y);
+        super(x, y, SIZE_X, SIZE_Y, color);
         this.statBoost = statBoost;
         this.type = type;
-        this.color = color;
     }
 
     public int getStatBoost() {

@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
     private GameModel gameModel;
     private GamePanel gamePanel;
     private ScorePanel scorePanel;
-
+    private Timer gameTimer;
 
     //Starts gameplay when an instance is created
     public MainPanel(int difficulty) {
@@ -24,6 +24,10 @@ public class MainPanel extends JPanel {
         addTimer();
     }
 
+    public int getDifficulty() {
+        return gameModel.getDifficulty();
+    }
+
     private void initPanels() {
         setLayout(new GridBagLayout());
         scorePanel = new ScorePanel();
@@ -31,25 +35,34 @@ public class MainPanel extends JPanel {
         gamePanel = new GamePanel(gameModel);
         gamePanel.setFocusable(true);
         gamePanel.setRequestFocusEnabled(true);
+        gameModel.addObserver(gamePanel);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 1;
         add(gamePanel, c);
         c.gridx = 0;
-        c.gridy = 0; // the score panel is set to be on top of the gameplay panel
+        c.gridy = 0;
         add(scorePanel, c);
-       // gamePanel.grabFocus();
     }
 
     private void addTimer() {
-        Timer t = new Timer(DELAY, new ActionListener() {
+        gameTimer = new Timer(DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameModel.update();
                 gamePanel.repaint();
             }
         });
-        t.start();
+        gameTimer.start();
+
+    }
+
+    public void pauseTimer() {
+        gameTimer.stop();
+    }
+
+    public void unPauseTimer() {
+        gameTimer.start();
     }
 
     private void initKeyBindings() {
@@ -60,6 +73,7 @@ public class MainPanel extends JPanel {
         kb.addMoveAction("D", KeyBindings.EAST);
         kb.addFireAction("SPACE");
         kb.addSwitchFireDirectionAction("F");
+        kb.addPauseAction("ESCAPE");
     }
 
     public GamePanel getGamePanel() {

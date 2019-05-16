@@ -1,6 +1,9 @@
 package model;
 
 
+import model.enemies.AdvancedEnemy;
+import model.enemies.BasicEnemy;
+import model.enemies.Enemy;
 import model.items.FiringSpeedBoost;
 import model.items.HealthBoost;
 import model.items.PowerUpItem;
@@ -21,18 +24,25 @@ public class GameModel {
     // these constants are PropertyChangeEvent names
     public static final String KILL = "kill";
     public static final String PLAYER_HIT = "player hit";
+    public static final String GAME_OVER = "game over";
 
     public static final int WIDTH = 700;
     public static final int HEIGHT = 700;
     public static final int INITIAL_PLAYER_X = 250;
     public static final int INITIAL_PLAYER_Y = 250;
-    public static final int MAX_ENEMIES_INITIAL = 4;
+    public static final int MAX_ENEMIES_EASY = 3;
+    public static final int MAX_ENEMIES_NORMAL = 4;
     public static final int DEAD_ENEMY_DELAY = 500;
     public static final int NEW_ENEMY_DELAY = DEAD_ENEMY_DELAY + 3000;
+    public static final int RELEASE_AE_KILL_COUNT_MIN = 5;
+    public static final int MAX_CHANCE_AE_SPAWN = 35; // max chance for an advanced enemy to spawn is 75%
+    public static final int INITIAL_CHANCE_AE_SPAWN = 85; // initial chance for an advanced enemy to spawn is 15%
 
-    private int difficulty;
     private Player player;
     private int killCount;
+    private int difficulty;
+    private List<AdvancedEnemy> movedAdvancedEnemies; // this and the cancelledMovedAdvancedEnemies list are for advanced enemy collision detection (see handleAdvancedEnemyMovement(AdvancedEnemy e) method)
+    private List<AdvancedEnemy> cancelledMovedAdvancedEnemies;
     private List<Enemy> enemies;
     private List<Enemy> deadEnemies;
     private List<PowerUpItem> powerUpItems;
@@ -45,12 +55,22 @@ public class GameModel {
         enemies = new ArrayList<>();
         deadEnemies = new ArrayList<>();
         powerUpItems = new ArrayList<>();
-        maxEnemies = MAX_ENEMIES_INITIAL;
+        movedAdvancedEnemies = new ArrayList<>();
+        cancelledMovedAdvancedEnemies = new ArrayList<>();
+        maxEnemies = MAX_ENEMIES_NORMAL;
         random = new Random();
         generateEnemies();
         support = new PropertyChangeSupport(this);
         killCount = 0;
         initDifficulty(difficulty);
+    }
+
+    public boolean isGameOver() {
+        return player.isDead();
+    }
+
+    public int getDifficulty() {
+        return difficulty;
     }
 
     public void addObserver(PropertyChangeListener pcl) {
@@ -77,9 +97,11 @@ public class GameModel {
     }
 
     private void handlePlayer() {
-        player.move();
-        handlePlayerProjectiles();
-        checkPlayerCollisions();
+        if (!player.isDead()) {
+            player.move();
+            handlePlayerProjectiles();
+            checkPlayerCollisions();
+        }
     }
 
     private void checkPlayerCollisions() {
@@ -101,9 +123,32 @@ public class GameModel {
         List<Enemy> enemiesCopy = new ArrayList<>(enemies);
         List<Projectile> playerProjectilesCopy = new ArrayList<>(player.getProjectiles());
         for (Enemy e : enemiesCopy) {
-            e.move();
+            handleEnemyMovement(e);
             checkEnemyCollisions(e, playerProjectilesCopy);
             handleDeadEnemies(e);
+        }
+        movedAdvancedEnemies.clear();
+        cancelledMovedAdvancedEnemies.clear();
+    }
+
+    private void handleEnemyMovement(Enemy e) {
+        e.move();
+        if (AdvancedEnemy.class.equals(e.getClass())) {
+            AdvancedEnemy cur = (AdvancedEnemy) e;
+            handleAdvancedEnemyMovement(cur);
+        }
+    }
+
+    // 2 factors affect advanced enemy movement in case of collision :
+    //      if one of the pair's moves has been cancelled
+    //      and which of the two is closer to player
+    private void handleAdvancedEnemyMovement(AdvancedEnemy cur) {
+        movedAdvancedEnemies.add(cur);
+        AdvancedEnemy other = enemyOverlapCheck(cur);
+        if (other != null && movedAdvancedEnemies.contains(other)) {
+            if (!cancelledMovedAdvancedEnemies.contains(other) || !cancelledMovedAdvancedEnemies.contains(cur)) {
+                moveCloserAdvancedEnemy(cur, other);
+            }
         }
     }
 
@@ -114,7 +159,7 @@ public class GameModel {
 
     private void checkEnemyHit(Enemy e, List<Projectile> playerProjectilesCopy) {
         for (Projectile p : playerProjectilesCopy) { // check if each player projectile has hit an enemy
-            if (coordinatesOverlap(e, p)) {
+            if (e.coordinatesOverlap(p)) {
                 support.firePropertyChange(KILL, killCount, ++killCount);
                 e.die();
                 player.getProjectiles().remove(p);
@@ -124,10 +169,11 @@ public class GameModel {
     }
 
     private void checkEnemyPlayerCollision(Enemy e) {
-        if (coordinatesOverlap(player, e) && !player.isHit()) {
+        if (e.coordinatesOverlap(player) && !player.isHit()) {
             int prevHealth = player.getHealth();
             player.getHit();
-            support.firePropertyChange(PLAYER_HIT, prevHealth, player.getHealth());
+            if (player.isDead()) support.firePropertyChange(GAME_OVER, null, null);
+            else support.firePropertyChange(PLAYER_HIT, prevHealth, player.getHealth());
         }
     }
 
@@ -189,46 +235,83 @@ public class GameModel {
     }
 
     private Enemy randomEnemy() {
-        int x = random.nextInt(GameModel.WIDTH - (GameModel.WIDTH / 2)) + GameModel.WIDTH / 2;  // enemies can only spawn in half the screen
+        int x = random.nextInt(GameModel.WIDTH - (GameModel.WIDTH / 2)) + GameModel.WIDTH / 2;  // spawns enemies in right side of screen; assume player spawns in left side
         int y = random.nextInt(GameModel.HEIGHT);
-        return new Enemy(x, y);
+        return selectEnemy(x, y);
+    }
+
+    // returns an advanced enemy if kill count is >= RELEASE_ADVANCED_ENEMIES
+    private Enemy selectEnemy(int x, int y) {
+        Enemy e = new BasicEnemy(x, y);
+        if (killCount >= RELEASE_AE_KILL_COUNT_MIN) {
+            Enemy a = generateAdvancedEnemy(x, y);
+            if (a != null) return a;
+        }
+        return e;
+    }
+
+    // dynamically returns an advanced enemy based on current kill count at x and y points
+    // Chance to spawn an advanced enemy increases with kill count until it reaches a limit of MAX_CHANCE_AE_SPAWN
+    // returns null if chance to spawn advanced enemy was too low
+    private Enemy generateAdvancedEnemy(int x, int y) {
+        int n = random.nextInt(100);
+        int lim = calculateAdvancedEnemySpawnMaxChance();
+        AdvancedEnemy a = null;
+        if (n >= lim) {
+            a = new AdvancedEnemy(x, y, player);
+        }
+        return a;
+    }
+
+    private int calculateAdvancedEnemySpawnMaxChance() {
+        int lim = INITIAL_CHANCE_AE_SPAWN - killCount + RELEASE_AE_KILL_COUNT_MIN;
+        if (lim < MAX_CHANCE_AE_SPAWN) return MAX_CHANCE_AE_SPAWN;
+        return lim;
     }
 
     // returns true if the object's coordinates are not used by a player, any missiles, and any enemies
     private boolean coordinatesNotOccupied(GameObject g) {
         //checks overlap with player
-        if (coordinatesOverlap(player, g)) return false;
+        if (player.coordinatesOverlap(g)) return false;
 
-        List<Projectile> cumulativeProjectiles = player.getProjectiles();
-        //checks each enemies' position and adds their projectiles to a cumulative list
-        for (Enemy e : enemies) {
-            if (coordinatesOverlap(e, g)) return false;
-            cumulativeProjectiles.addAll(e.getProjectiles());
-        }
         //check each projectiles' overlap
-        for (Projectile p : cumulativeProjectiles) {
-            if (coordinatesOverlap(p, g)) return false;
+        for (Projectile p : player.getProjectiles()) {
+            if (player.coordinatesOverlap(g)) return false;
         }
         return true;
     }
 
-    //public for testing
-    public static boolean coordinatesOverlap(GameObject g1, GameObject g2) {
-        return (xCoordinatesOverlap(g1, g2) && yCoordinatesOverlap(g1, g2));
+    // returns an advancedEnemy the e1 is overlapping
+    private AdvancedEnemy enemyOverlapCheck(AdvancedEnemy e1) {
+        for (AdvancedEnemy e : movedAdvancedEnemies) { // switch with advanced enemy list
+            if (!e.equals(e1) && e.coordinatesOverlap(e1)) {
+                return e;
+            }
+        }
+        return null;
     }
 
-    private static boolean xCoordinatesOverlap(GameObject g1, GameObject g2) {
-        return g1.getX() <= g2.getX() + g2.getSizeX() && g1.getX() + g1.getSizeX() >= g2.getX();
-    }
-
-    private static boolean yCoordinatesOverlap(GameObject g1, GameObject g2) {
-        return g1.getY() <= g2.getY() + g2.getSizeY() && g1.getY() + g1.getSizeY() >= g2.getY();
+    // calculates which advanced enemies is closer and cancels the other's move depending on if its been already cancelled
+    private void moveCloserAdvancedEnemy(AdvancedEnemy e1, AdvancedEnemy e2) {
+        int difM1x = Math.abs(e1.getX() - player.getX());
+        int difM2x = Math.abs(e2.getX() - player.getX());
+        int difM1y = Math.abs(e1.getY() - player.getY());
+        int difM2y = Math.abs(e2.getY() - player.getY());
+        int totalDif1 = difM1x + difM1y;
+        int totalDif2 = difM2x + difM2y;
+        if (totalDif1 < totalDif2 && !cancelledMovedAdvancedEnemies.contains(e2)) { // e1 is closer
+            e2.cancelMove();
+            cancelledMovedAdvancedEnemies.add(e2);
+        } else if (!cancelledMovedAdvancedEnemies.contains(e1)) {
+            e1.cancelMove();
+            cancelledMovedAdvancedEnemies.add(e1);
+        }
     }
 
     private void checkItemPlayerCollision() {
         List<PowerUpItem> powerUpItemsCopy = new ArrayList<>(powerUpItems);
         for (PowerUpItem pui : powerUpItemsCopy) {
-            if (coordinatesOverlap(player, pui)) {
+            if (player.coordinatesOverlap(pui)) {
                 boolean pickUp = player.takePowerUp(pui);
                 if (pickUp) {
                     powerUpItems.remove(pui);
@@ -249,10 +332,15 @@ public class GameModel {
     }
 
     private void initDifficulty(int difficulty) {
+        this.difficulty = difficulty;
         if (difficulty == HomePanel.EASY) {
-            Enemy.setEnemySpeed(Enemy.EASY_SPEED);
+            BasicEnemy.setBasicEnemySpeed(BasicEnemy.EASY_SPEED);
+            AdvancedEnemy.setAdvancedEnemySpeed(AdvancedEnemy.EASY_SPEED);
+            maxEnemies = MAX_ENEMIES_EASY;
         } else {
-            Enemy.setEnemySpeed(Enemy.NORMAL_SPEED);
+            BasicEnemy.setBasicEnemySpeed(BasicEnemy.NORMAL_SPEED);
+            AdvancedEnemy.setAdvancedEnemySpeed(AdvancedEnemy.NORMAL_SPEED);
+            maxEnemies = MAX_ENEMIES_NORMAL;
         }
     }
 }

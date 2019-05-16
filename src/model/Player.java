@@ -16,7 +16,7 @@ import java.util.List;
 public class Player extends MoveableObject {
 
     public static final int FIRE_DELAY_INITIAL = 800;
-    public static final int MOVEMENT_SPEED_INITIAL = 4;
+    public static final int MOVEMENT_SPEED_INITIAL = 4; // 4
     public static final int FIRE_DELAY_MIN = 200;
     public static final int MOVEMENT_SPEED_MAX = 10;
     public static final int HEALTH_MAX = 3;
@@ -34,6 +34,7 @@ public class Player extends MoveableObject {
     public static final Color HIT_COLOR = new Color(250, 100, 100);
     public static final int HIT_STATUS_DELAY = 900;
 
+    private boolean isDead;
     private int dx;
     private int dy;
     private boolean isHit;
@@ -44,9 +45,10 @@ public class Player extends MoveableObject {
     private List<Projectile> projectiles;
 
     public Player(int x, int y) {
-        super(x, y, SIZE_X, SIZE_Y);
+        super(x, y, SIZE_X, SIZE_Y, COLOR);
         projectiles = new ArrayList<>();
         isHit = false;
+        isDead = false;
         fireDirection = Projectile.RIGHT; // initially fires to the right
         firingSpeedDelay = FIRE_DELAY_INITIAL;
         health = HEALTH_MAX;
@@ -54,6 +56,8 @@ public class Player extends MoveableObject {
         dx = 0;
         dy = 0;
     }
+
+    public boolean isDead() { return isDead; }
 
     public boolean isHit() {
         return isHit;
@@ -128,8 +132,9 @@ public class Player extends MoveableObject {
         health -= HEALTH_DECREMENT_AMOUNT;
         if (health > HEALTH_MIN) {
             addHitTimer();
+        } else {
+            isDead = true;
         }
-        // deal with dead status
     }
 
     private void addHitTimer() {
@@ -168,7 +173,6 @@ public class Player extends MoveableObject {
                 return true;
         }
         throw new UnrecognizedPowerUpTypeException();
-
     }
 
 
