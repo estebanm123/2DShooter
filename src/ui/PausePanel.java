@@ -30,6 +30,10 @@ public class PausePanel extends JPanel {
         support.addPropertyChangeListener(pcl);
     }
 
+    public void removeObserver(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
+    }
+
 
     private void initComponents() {
         createPauseLabel();

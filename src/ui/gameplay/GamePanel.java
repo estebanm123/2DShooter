@@ -198,18 +198,20 @@ public class GamePanel extends JPanel implements PropertyChangeListener {
         support.firePropertyChange(PAUSE_GAME, null, null);
         pausePanel.setVisible(true);
         pausePanel.setEnabled(true);
-        //validate();
     }
 
     public void unPauseGame() {
         support.firePropertyChange(UN_PAUSE_GAME, null, null);
         pausePanel.setVisible(false);
         pausePanel.setEnabled(false);
-        // validate();
     }
 
     public PausePanel getPausePanel() {
         return pausePanel;
+    }
+
+    public void removeObserver(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
     }
 
 }

@@ -70,9 +70,10 @@ public class Game extends JFrame implements PropertyChangeListener {
                 add(instructionsPanel);
                 break;
             case (GamePanel.RESTART):
-                mainPanel.setEnabled(false);
+                removeMainPanelObservers();
                 remove(mainPanel);
                 mainPanel = new MainPanel(mainPanel.getDifficulty());
+                addMainPanelObservers();
                 add(mainPanel);
                 mainPanel.getGamePanel().grabFocus();
                 validate();
@@ -92,11 +93,20 @@ public class Game extends JFrame implements PropertyChangeListener {
         remove(homePanel);
         remove(instructionsPanel);
         mainPanel = new MainPanel((Integer) evt.getNewValue());
-        mainPanel.getGamePanel().addObserver(this);
-        mainPanel.getGamePanel().getPausePanel().addObserver(this);
+        addMainPanelObservers();
         add(mainPanel);
         mainPanel.getGamePanel().grabFocus();
         validate();
+    }
+
+    private void removeMainPanelObservers() {
+        mainPanel.getGamePanel().removeObserver(this);
+        mainPanel.getGamePanel().getPausePanel().removeObserver(this);
+    }
+
+    private void addMainPanelObservers() {
+        mainPanel.getGamePanel().addObserver(this);
+        mainPanel.getGamePanel().getPausePanel().addObserver(this);
     }
 
     public static void main(String[] args) {
