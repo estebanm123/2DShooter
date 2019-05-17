@@ -1,6 +1,4 @@
-# 2DShooter
-
-Submarine Shooter
+# Submarine Shooter
 
 This is a 2D arcade shooter built in java.
 
