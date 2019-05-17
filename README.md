@@ -3,7 +3,7 @@
 Submarine Shooter
 
 This is a 2D arcade shooter built in java.
-HOW TO PLAY
+<br />
 The goal is to survive survive and to defeat the most amount of enemies possible.
 At first, there's only one enemy type that randomly circulates around the screen. But, as the player
 kills more enemies the second type will spawn - this stalks the player until they reach them. 
