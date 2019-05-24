@@ -124,25 +124,10 @@ public class KeyBindings {
 
     private class FireAction extends AbstractAction {
 
-        private Timer fireTimer;
-        private boolean hasFired;
-
-        public FireAction() {
-            fireTimer = new Timer(player.getFiringSpeedDelay(), new ActionListener() { // sets up a timer to add delay between shots fired
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    hasFired = false;
-                }
-            });
-            fireTimer.setInitialDelay(player.getFiringSpeedDelay());
-            fireTimer.start();
-        }
-
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!hasFired) {
+            if (player.canFire()) {
                 player.fireProjectile();
-                hasFired = true;
             }
 
         }

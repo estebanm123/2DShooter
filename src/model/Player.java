@@ -35,6 +35,7 @@ public class Player extends MoveableObject {
     public static final int HIT_STATUS_DELAY = 900;
 
     private boolean isDead;
+    private boolean canFire;
     private int dx;
     private int dy;
     private boolean isHit;
@@ -42,6 +43,7 @@ public class Player extends MoveableObject {
     private int firingSpeedDelay;
     private int movementSpeed;
     private boolean fireDirection;
+    private Timer fireTimer;
     private List<Projectile> projectiles;
 
     public Player(int x, int y) {
@@ -55,6 +57,8 @@ public class Player extends MoveableObject {
         movementSpeed = MOVEMENT_SPEED_INITIAL;
         dx = 0;
         dy = 0;
+        canFire = true;
+        initFireTimer();
     }
 
     public boolean isDead() { return isDead; }
@@ -111,10 +115,27 @@ public class Player extends MoveableObject {
         this.fireDirection = !fireDirection;
     }
 
+    public boolean canFire() { return canFire; }
+
+    public void setCanFire(boolean canFire) { this.canFire = canFire; }
+
+    private void initFireTimer() {
+        fireTimer = new Timer(firingSpeedDelay, new ActionListener() { // sets up a timer to add delay between shots fired
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canFire = true;
+            }
+        });
+        fireTimer.setInitialDelay(firingSpeedDelay);
+        //fireTimer.start();
+    }
+
     // fires a projectile if player is not hit
     public void fireProjectile() {
         if (!isHit) {
+            fireTimer.restart();
             projectiles.add(new Projectile(x, y + SIZE_Y / 2, fireDirection)); // fires missile from middle of player
+            canFire = false;
         }
     }
 
@@ -166,6 +187,7 @@ public class Player extends MoveableObject {
             case (FiringSpeedBoost.TYPE):
                 if (firingSpeedDelay - boost < FIRE_DELAY_MIN) return false;
                 firingSpeedDelay -= pui.getStatBoost();
+                fireTimer.setInitialDelay(firingSpeedDelay);
                 return true;
             case (SpeedBoost.TYPE):
                 if (movementSpeed + boost > MOVEMENT_SPEED_MAX) return false;
