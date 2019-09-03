@@ -1,6 +1,6 @@
 # Submarine Shooter
 
-Download here: https://drive.google.com/file/d/16HNJDLKAaLHSlpNxE9raZpXypgOZiPde/view?usp=sharing (will lag on performance-mode laptops)
+Download here: https://drive.google.com/file/d/16HNJDLKAaLHSlpNxE9raZpXypgOZiPde/view?usp=sharing (game may lag on performance-mode laptops)
 
 This is a 2D arcade shooter built in Java.
 
