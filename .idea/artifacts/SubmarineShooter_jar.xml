@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SubmarineShooter.jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SubmarineShooter_jar</output-path>
+    <root id="archive" name="ShooterGame.jar">
+      <element id="module-output" name="ShooterGame" />
+      <element id="library" level="module" name="JUnit5.3" module-name="ShooterGame" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

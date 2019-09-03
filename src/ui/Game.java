@@ -22,14 +22,14 @@ public class Game extends JFrame implements PropertyChangeListener {
     public Game() {
         super("Deep Sea Shooter");
         initMenus();
-//        mainPanel = new MainPanel(NORMAL);
-//        add(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardLayout cl = new CardLayout();
         setLayout(cl);
         setUndecorated(true);
         setVisible(true);
         pack();
+        setLocationRelativeTo(null);
+        getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1,1, 1, Color.BLACK));
     }
 
     private void initMenus() {

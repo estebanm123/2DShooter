@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="SubmarineShooter.jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="683ed761-20ca-49c7-9f33-9bb0e91c1cf6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/SubmarineShooter_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ShooterGame/model/Player$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ShooterGame/model/Player$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ShooterGame/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ShooterGame/model/Player.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ShooterGame/model/items/FiringSpeedBoost.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ShooterGame/model/items/FiringSpeedBoost.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/gameplay/KeyBindings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/gameplay/KeyBindings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/gameplay/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/gameplay/MainPanel.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,7 +44,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ui/gameplay/KeyBindings.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="205">
+                <state relative-caret-position="2074">
                   <caret line="129" column="40" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -53,8 +58,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ui/PausePanel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-543">
-                  <caret line="35" selection-start-line="35" selection-end-line="35" />
+                <state relative-caret-position="272">
+                  <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -65,7 +70,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ui/HomePanel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="153">
+                <state relative-caret-position="357">
                   <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -85,11 +90,35 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/model/items/FiringSpeedBoost.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+                <state relative-caret-position="204">
+                  <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/ui/Game.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="425">
+                  <caret line="31" column="89" selection-start-line="31" selection-start-column="89" selection-end-line="31" selection-end-column="89" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/ui/InstructionsPanel.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="644">
+                  <caret line="48" column="49" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -123,21 +152,9 @@
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ui/Game.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="672">
-                  <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ui/HomePanel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="901">
+                <state relative-caret-position="621">
                   <caret line="53" column="2" selection-start-line="53" selection-start-column="2" selection-end-line="53" selection-end-column="2" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -151,8 +168,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ui/gameplay/MainPanel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1139">
-                  <caret line="79" column="18" selection-start-line="79" selection-start-column="18" selection-end-line="79" selection-end-column="18" />
+                <state relative-caret-position="289">
+                  <caret line="17" selection-start-line="17" selection-end-line="17" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -163,16 +180,11 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/model/Player.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="205">
-                  <caret line="189" column="60" selection-start-line="189" selection-start-column="60" selection-end-line="189" selection-end-column="60" />
+                <state relative-caret-position="221">
+                  <caret line="13" column="14" lean-forward="true" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
                   <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#2315#2316#0" expanded="true" />
-                    <element signature="e#2354#2355#0" expanded="true" />
                     <element signature="e#3082#3083#0" expanded="true" />
                     <element signature="e#3133#3134#0" expanded="true" />
-                    <element signature="e#3322#3323#0" expanded="true" />
-                    <element signature="e#3368#3369#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -181,14 +193,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ui/gameplay/GamePanel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3213">
-                  <caret line="208" column="18" selection-start-line="208" selection-start-column="18" selection-end-line="208" selection-end-column="18" />
+                <state relative-caret-position="272">
+                  <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#5389#5390#0" expanded="true" />
-                    <element signature="e#5473#5474#0" expanded="true" />
-                    <element signature="e#6034#6035#0" expanded="true" />
-                    <element signature="e#6113#6114#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -197,10 +205,29 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/model/GameModel.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="17">
-                  <caret line="34" column="51" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+                <state relative-caret-position="935">
+                  <caret line="75" column="22" selection-start-line="75" selection-start-column="22" selection-end-line="75" selection-end-column="22" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="e#2813#2814#0" expanded="true" />
+                    <element signature="e#2867#2868#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/GameObject.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="646">
+                  <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#891#892#0" expanded="true" />
+                    <element signature="e#919#920#0" expanded="true" />
+                    <element signature="e#1007#1008#0" expanded="true" />
+                    <element signature="e#1035#1036#0" expanded="true" />
+                    <element signature="e#1076#1077#0" expanded="true" />
+                    <element signature="e#1110#1111#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -218,7 +245,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/model/items/PowerUpItem.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="140">
+                <state relative-caret-position="136">
                   <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -280,6 +307,8 @@
       <find>generate</find>
       <find>GENERA</find>
       <find>gameOver</find>
+      <find>canfire</find>
+      <find>pack</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -324,20 +353,21 @@
         <option value="$PROJECT_DIR$/src/ui/HomePanel.java" />
         <option value="$PROJECT_DIR$/src/model/GameModel.java" />
         <option value="$PROJECT_DIR$/src/ui/gameplay/ScorePanel.java" />
-        <option value="$PROJECT_DIR$/src/ui/gameplay/MainPanel.java" />
         <option value="$PROJECT_DIR$/src/ui/gameplay/GamePanel.java" />
         <option value="$PROJECT_DIR$/src/ui/PausePanel.java" />
-        <option value="$PROJECT_DIR$/src/ui/Game.java" />
         <option value="$PROJECT_DIR$/src/ui/gameplay/KeyBindings.java" />
         <option value="$PROJECT_DIR$/src/model/Player.java" />
         <option value="$PROJECT_DIR$/src/model/items/FiringSpeedBoost.java" />
+        <option value="$PROJECT_DIR$/src/ui/gameplay/MainPanel.java" />
+        <option value="$PROJECT_DIR$/src/ui/Game.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="660" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="651" />
+    <option name="y" value="2" />
     <option name="width" value="980" />
-    <option name="height" value="1039" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -346,55 +376,53 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="SubmarineShooter_jar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="production" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="items" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
+              <item name="Submarine-Shooter" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2DShooter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2DShooter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="gameplay" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -407,7 +435,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -426,7 +454,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Game">
+  <component name="RunManager" selected="JAR Application.ShooterGame.jar">
     <configuration name="Game" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ui.Game" />
       <module name="ShooterGame" />
@@ -465,22 +493,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameModelTest.testMoveableNoOverlapSameY" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ShooterGame" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Test" />
-      <option name="MAIN_CLASS_NAME" value="Test.GameModelTest" />
-      <option name="METHOD_NAME" value="testMoveableNoOverlapSameY" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="GameModelTest.testMoveableOverlapOppositeBottomEdge" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ShooterGame" />
       <extension name="coverage">
@@ -497,13 +509,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ShooterGame.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/SubmarineShooter_jar/ShooterGame.jar" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JAR Application.ShooterGame.jar" />
         <item itemvalue="Application.Game" />
         <item itemvalue="JUnit.GameModelTest" />
         <item itemvalue="JUnit.GameModelTest.testMoveableOverlapOppositeBottomEdge" />
         <item itemvalue="JUnit.GameModelTest.testMoveableNoOverlapOppositeBottomEdgeBeyond" />
-        <item itemvalue="JUnit.GameModelTest.testMoveableNoOverlapSameY" />
       </list>
     </recent_temporary>
   </component>
@@ -733,20 +749,6 @@
     <MESSAGE value="- Fixed a bug where observers were not being added after restarting game" />
     <option name="LAST_COMMIT_MESSAGE" value="- Fixed a bug where observers were not being added after restarting game" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ui/gameplay/GamePanel.java</url>
-          <line>196</line>
-          <properties class="ui.gameplay.GamePanel" method="pauseGame">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/model/Player2.java" />
     <entry file="file://$PROJECT_DIR$/ShooterGame.iml">
@@ -840,16 +842,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/images/SpaceShipLeft.png" />
     <entry file="file://$PROJECT_DIR$/src/ui/DifficultyPanel.java" />
-    <entry file="file://$PROJECT_DIR$/src/ui/InstructionsPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="48" column="49" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.desktop/java/awt/Container.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
@@ -892,21 +884,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/GameObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
-          <folding>
-            <element signature="e#891#892#0" expanded="true" />
-            <element signature="e#919#920#0" expanded="true" />
-            <element signature="e#1007#1008#0" expanded="true" />
-            <element signature="e#1035#1036#0" expanded="true" />
-            <element signature="e#1076#1077#0" expanded="true" />
-            <element signature="e#1110#1111#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/enemies/AdvancedEnemy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -941,6 +918,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/ScorePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/KeyBindings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2074">
+          <caret line="129" column="40" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2268#2269#0" expanded="true" />
+            <element signature="e#2306#2307#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Projectile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/enemies/BasicEnemy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -961,73 +967,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/PausePanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-543">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/ScorePanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/MainPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="79" column="18" selection-start-line="79" selection-start-column="18" selection-end-line="79" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/GamePanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3213">
-          <caret line="208" column="18" selection-start-line="208" selection-start-column="18" selection-end-line="208" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5389#5390#0" expanded="true" />
-            <element signature="e#5473#5474#0" expanded="true" />
-            <element signature="e#6034#6035#0" expanded="true" />
-            <element signature="e#6113#6114#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.desktop/java/beans/PropertyChangeSupport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3944">
-          <caret line="263" column="16" selection-start-line="263" selection-start-column="16" selection-end-line="263" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/GameModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="34" column="51" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
+        <state relative-caret-position="935">
+          <caret line="75" column="22" selection-start-line="75" selection-start-column="22" selection-end-line="75" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2813#2814#0" expanded="true" />
+            <element signature="e#2867#2868#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+          <folding>
+            <element signature="e#891#892#0" expanded="true" />
+            <element signature="e#919#920#0" expanded="true" />
+            <element signature="e#1007#1008#0" expanded="true" />
+            <element signature="e#1035#1036#0" expanded="true" />
+            <element signature="e#1076#1077#0" expanded="true" />
+            <element signature="e#1110#1111#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1039,6 +1001,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/items/PowerUpItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/items/SpeedBoost.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1046,17 +1018,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/Projectile.java">
+    <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.desktop/java/beans/PropertyChangeSupport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="3944">
+          <caret line="263" column="16" selection-start-line="263" selection-start-column="16" selection-end-line="263" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/GamePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ui/HomePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="53" column="2" selection-start-line="53" selection-start-column="2" selection-end-line="53" selection-end-column="2" />
+        <state relative-caret-position="357">
+          <caret line="28" column="39" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6374#6375#0" expanded="true" />
@@ -1065,22 +1047,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/KeyBindings.java">
+    <entry file="file://$PROJECT_DIR$/src/ui/gameplay/MainPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="129" column="40" selection-start-line="129" selection-start-column="40" selection-end-line="129" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2268#2269#0" expanded="true" />
-            <element signature="e#2306#2307#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/items/PowerUpItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+        <state relative-caret-position="289">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1089,23 +1059,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/items/FiringSpeedBoost.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+        <state relative-caret-position="204">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/InstructionsPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="48" column="49" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/PausePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="189" column="60" selection-start-line="189" selection-start-column="60" selection-end-line="189" selection-end-column="60" />
+        <state relative-caret-position="221">
+          <caret line="13" column="14" lean-forward="true" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2315#2316#0" expanded="true" />
-            <element signature="e#2354#2355#0" expanded="true" />
             <element signature="e#3082#3083#0" expanded="true" />
             <element signature="e#3133#3134#0" expanded="true" />
-            <element signature="e#3322#3323#0" expanded="true" />
-            <element signature="e#3368#3369#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ui/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="31" column="89" selection-start-line="31" selection-start-column="89" selection-end-line="31" selection-end-column="89" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1116,10 +1111,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>SubmarineShooter.jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
