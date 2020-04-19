@@ -1,6 +1,6 @@
 # Submarine Shooter
 
-Download here: https://drive.google.com/file/d/16HNJDLKAaLHSlpNxE9raZpXypgOZiPde/view?usp=sharing You may need to run as administrator.(game may lag on performance-mode laptops)
+Download here: https://drive.google.com/file/d/16HNJDLKAaLHSlpNxE9raZpXypgOZiPde/view?usp=sharing You may need to run as administrator.
 
 This is a 2D arcade shooter built in Java.
 
